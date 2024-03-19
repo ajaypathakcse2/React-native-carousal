@@ -1,31 +1,37 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {FlatList, View, Text, StyleSheet, Dimensions} from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { FlatList, View, Text, StyleSheet, Dimensions } from 'react-native';
 
 const width = Dimensions.get('window').width;
 
 const Carousal = () => {
   const carousalData = [
     {
+      id: 0,
       name: 'Banner 1',
       img: 'Image',
     },
     {
+      id: 1,
       name: 'Banner 2',
       img: 'Image',
     },
     {
+      id: 2,
       name: 'Banner 3',
       img: 'Image',
     },
     {
+      id: 3,
       name: 'Banner 4',
       img: 'Image',
     },
     {
+      id: 4,
       name: 'Banner 5',
       img: 'Image',
     },
     {
+      id: 5,
       name: 'Banner 6',
       img: 'Image',
     },
@@ -33,7 +39,6 @@ const Carousal = () => {
 
   const [current, setCurrent] = useState(0);
   const flatListRef = useRef(); // a reference of flatList to call its scrollToIndex function
-  const indexRef = useRef(0);
 
   const carousalItem = (item: any) => {
     return (
@@ -54,12 +59,12 @@ const Carousal = () => {
   };
 
   useEffect(() => {
+
     flatListRef.current?.scrollToIndex({
       animated: true,
-      index: (current + 1) % 6,
+      index: (current)
     });
   }, [current]);
-  console.log(current, '>>>>');
 
   return (
     <View style={styles.container}>
@@ -68,22 +73,15 @@ const Carousal = () => {
         horizontal={true}
         data={carousalData}
         keyExtractor={item => item.name}
-        renderItem={({index, item}) => carousalItem(item)}
-        onScrollToIndexFailed={info => {
-          const wait = new Promise(resolve => setTimeout(resolve, 500));
-          wait.then(() => {
-            flatListRef.current?.scrollToIndex({
-              index: current,
-              animated: true,
-            });
-          });
-        }}
+        renderItem={({ index, item }) => carousalItem(item)}
+
       />
       <View
-        style={{flexDirection: 'row', justifyContent: 'center', marginTop: 10}}>
-        {carousalData.map(item => (
-          <View key={item.name} style={styles.indicatorStyle} />
-        ))}
+        style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 10 }}>
+        {carousalData.map(item => {
+
+          return <View key={item.name} style={[styles.indicatorStyle, { backgroundColor: item.id == current ? "#000" : "#ddd" }]} />
+        })}
       </View>
     </View>
   );
